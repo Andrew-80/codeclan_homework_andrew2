@@ -1,0 +1,18 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+edin_temp <- c(13, 17, 16, 17, 16)
+```
+
+```{r}
+edin_temp character <- c(19l, 19l, 19l, 19l, 19l)
+```
+
+```{r}
+character vector("cloudy", "couldy", "cloudy", "cloudy", "sunny intervals"")
+
+```
+

@@ -1,0 +1,6 @@
+"0","is_bird <- function(x) {"
+"0","  if (x %in% c(""goose"", ""duck"", ""pigeon"") {"
+"2","Error: unexpected '{' in:
+""is_bird <- function(x) {
+  if (x %in% c(""goose"", ""duck"", ""pigeon"") {""
+"

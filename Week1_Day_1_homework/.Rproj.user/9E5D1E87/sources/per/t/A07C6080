@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1593545239838.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1020932900",
+    "id" : "A07C6080",
+    "lastKnownWriteTime" : 1593588212,
+    "last_content_update" : 1593608563951,
+    "path" : "~/Documents/codeclan_work/live_projects/Liveprojects_week1_day2/CodeClan_Week1_Day_1_homework/CodeClan_Week1_Day_2_homeword.Rmd",
+    "project_path" : "CodeClan_Week1_Day_2_homeword.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "47,0",
+        "scrollLine" : "43",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

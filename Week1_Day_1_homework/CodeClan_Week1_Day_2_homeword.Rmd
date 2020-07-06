@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+```
+```{r}
+day_of_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+```
+
+```{r}
+day_of_week_factor <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+as.factor(c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+```
+
+```{r}
+named_stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+as.character <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+```
+```{r}
+day_of_week_factor <- as.factor(day_of_week)
+```
+```{r}
+stock_data <- data.frame(stock_prices = stock_prices, day_of_week = day_of_week)
+```
+```{r}
+View(stock_data)
+```
+
+```{r}
+stock_list <- list(stock_prices = stock_prices, day_of_week = day_of_week, stock_data = stock_data)
+```
+```{r}
+stock_prices[c(4, 5, 6)]
+```
+
+```{r}
+stock_prices[c(4, 5, 6)]
+```
+```{r}
+stock_prices[c( ,> 30)]
+```
+```{r}
+view (stock_prices)
+```
