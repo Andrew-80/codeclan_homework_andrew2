@@ -49,7 +49,7 @@ cars_data
 
 1.4 Scotland file
 ```{r}
-scotland_data <- read_tsv("data/scotland.txt")
+scotland_data <- read_csv("data/scotland.txt")
 scotland_data
 ```
 
