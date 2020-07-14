@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+starbucks_drink <- read.csv("starbucks_drinkMenu_expanded.csv")
+starbucks_drink
+```
+
+Question 2 Load in the dataset and have a look at it.
+```{r}
+head(starbucks_drink)
+dim(starbucks_drink)
+names(dim(starbucks_drink))
+glimpse(starbucks_drink)
+starbucks_drink
+```
+
+Question 3. Investigate the calories of different drinks.
+```{r}
+starbucks_drink_calories <- select(starbucks_drink, 'Beverage_category', 'Beverage', 'Beverage_prep', 'Calories') %>%
+        arrange(desc(Calories))
+starbucks_drink_calories
+
+```
+
+```{r}
+starbucks_drink_calories <- select(starbucks_drink, 'Beverage_category', 'Beverage', 'Beverage_prep', 'Calories') %>%
+        drop_na(starbucks_drink_calories)
+starbucks_drink_calories
+
+```
+
+Question 4 Create a new variable (column) called calorie_diff
+```{r}
+calorie_diff = mutate(starbucks_drink_calories, calorie_diff = Calories - 135  )
+calorie_diff
+
+```
+
+Question 5 Summarise the mean number of calories in each beverage_category
+```{r}
+mean_calories <- summarise(starbucks_drink_calories) %>%
+                          beverage_category = mean(Calories)
+                          arrange(desc(Calories))
+mean_calories
+```
+
+state_stats
+Question 6 What is the average number of calories in each Beverage_prep type?
+```{r}
+
+
+```
+
+
+Question 7 Which Beverage_prep type contains more than the average calories of all drinks?
+```{r}
+
+
+```
+
+Question 8 Which is the best type of coffee drink to get if you’re worried about consuming too many calories?
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
