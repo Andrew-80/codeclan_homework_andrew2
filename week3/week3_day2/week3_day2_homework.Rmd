@@ -1,0 +1,115 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+```
+
+```{r}
+face_descrip <- read_csv("face_descriptions.csv")
+```
+
+Question 1
+```{r}
+head(face_descrip)
+dim(face_descrip)
+names(dim(face_descrip))
+glimpse(face_descrip)
+slice_min(face_descrip, 10)
+face_descrip
+```
+
+Question 2. Do these variable names look tidy to you? What format is your data in (long or wide)?
+A. No. Age is to a decimal and the columns are hard to understand. Wide format.
+
+Question 3.
+Long format.
+```{r}
+face_descrip %>% 
+  pivot_longer( 
+  cols = starts_with("t"),
+    values_to = c("description"),
+               )
+
+```
+
+```{r}
+names(face_descrip)
+```
+
+Question 4. Some people have given lengthy descriptions of the faces, some have only given one word. This can be problematic for analysis, if you eventually want to summarise key descriptions. Use the separate function to split apart the descriptions column so that if people have given more than one answer 
+
+```{r}
+sseparate(face_descrip,
+          col "description",
+          
+
+```
+
+separate(
+  data,
+  col,
+  into,
+  sep = "[^[:alnum:]]+",
+  remove = TRUE,
+  convert = FALSE,
+  extra = "warn",
+  fill = "warn",
+  ...
+)
+
+Question 5. We’ve now split the data, and have three description variables. But is this data ACTUALLY tidy? Isn’t one of the rules that we need to have only one column per variable? And now we have more than one description variables…
+
+```{r}
+
+```
+
+
+Question 6. Not everyone provided three descriptions! So, if you look at the data, we have some missing values (NAs). We also have some nonsense descriptions (e.g. “f” and “.”). Let’s now sort these out.
+```{r}
+
+```
+
+Question 7. Now we can actually find something out about our data. Let’s find out what the most common description of each face is. Earlier in the week you learnt how to pipe functions together to create summary stats.
+```{r}
+
+```
+
+
+Quesiton 8. Finally, arrange the output so that we have the most common description at the top, and the least common at the bottom
+```{r}
+
+```
+
+Question 9.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
