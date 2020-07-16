@@ -1,0 +1,104 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+Question 1
+```{r}
+# load in data 
+code_clan_tweets <- read_csv("code_clan_tweets.csv")
+code_clan_tweets
+```
+
+```{r}
+# Find the number of rows, columns, and list all the variable names
+#Rows: 234. Columns:  27
+dim(code_clan_tweets)
+names(code_clan_tweets)
+code_clan_tweets
+
+```
+
+```{r}
+head(code_clan_tweets)
+```
+```{r}
+view(code_clan_tweets)
+```
+
+
+Question 2. we’re going to summarise the number of likes (favorite_count) CodeClan tweets have. Create a boxplot to check for outliers.
+
+```{r}
+code_clan_tweets_variables <- code_clan_tweets %>%
+    select(favorite_count)
+
+boxplot(code_clan_tweets_variables)
+
+```
+
+Question 3. Find the total number of favourited tweets (stored in favorite_count) that CodeClan tweets have got. Don’t add a tweet’s favorite_count to the total when the tweet was quoted (see the is_quote variable).
+```{r}
+sum_code_clan_tweets <- summarise(code_clan_tweets, n = n())
+sum_code_clan_tweets
+```
+
+
+Question 4. Summarise the mean number of retweets (retweet_count), split by the type of platform that was used to tweet (source). Again, omit quoted tweets from the mean.
+```{r}
+summary(code_clan_tweets$retweet_count)
+
+```
+
+```{r}
+unique(code_clan_tweets$source)
+
+```
+
+```{r}
+code_clan_source <- code_clan_tweets %>%
+  mutate()
+  group_by("source"())
+head(code_clan_source)
+
+sum_tweets <- summarise(code_clan_source, n = n())
+sum_tweets
+
+```
+
+Question 5. Count the total number of likes (i.e. total of favorite_count), split by media type, and arrange them from most likes to least. Assume that any tweets without a listed media type are of type “text”.
+```{r}
+
+
+```
+
+Question 6. Find the mean number of characters that a CodeClan tweet contains.
+```{r}
+
+```
+
+
+Question 7. The code_clan_info.csv data file contains status_url along with other info. Load this in, and join it to the code_clan_tweets tibble, so that you have a status_url for each tweet. Decide which variable to join the tibbles on.
+```{r}
+
+```
+
+
+Question 8. From your new joined data, create a new tibble codeclan_hashtags containing only the tweet_id and hashtags in lowercase for analysis. Keep only those tweets with hashtags.
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
