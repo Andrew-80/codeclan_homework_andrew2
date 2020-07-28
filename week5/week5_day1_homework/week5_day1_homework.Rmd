@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# 1 Homework Info
+```{r}
+library(ggplot2)
+library(CodeClanData)
+library(tidyverse)
+```
+
+```{r}
+backpack
+```
+
+# 2. MVP
+
+# Question 1
+
+```{r}
+head(backpack)
+dim(backpack)
+names(dim(backpack))
+glimpse(backpack)
+slice_min(backpack, 10)
+backpack
+```
+
+# Question 2. What is the distribution of backpack weights that students are carrying? Choose an appropriate graph to show the distribution.
+# A.there is a large grouping around, with a few outliers around 25, up to 1 at 35. 
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, fill = ratio)) +
+  scale_fill_brewer()
+           
+```
+
+# Question 3. Are there differences in backpack weight between sex?
+A. 
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, fill =  sex), position = "dodge") +
+  scale_fill_brewer()
+```
+
+# Question 4. What is the relationship between body weight and backpack weight?
+```{r}
+ggplot(backpack) +
+  geom_bar(aes(x = backpack_weight, y = count, group = body_weight)) +
+  scale_fill_brewer()
+
+```
+
+# Question 5. Is this relationship different between men and women? Choose an appropriate plot and interpret your findings.
+```{r}
+ggplot(backpack) +
+  geom_line(aes(x = backpack_weight, y = count, group = sex))
+
+```
+
+# Question 6. What proportion of students report back pain?
+```{r}
+
+
+```
+
+# Question 7. Is this proportion different between men and women?
+```{r}
+
+
+```
+
+
+# Question 8. Now you’ve investigated your data separately, create plots to describe the relationship between backpack weight, body weight, gender and reported backpain.
+```{r}
+
+
+```
+
+
+
+
+
+
+
