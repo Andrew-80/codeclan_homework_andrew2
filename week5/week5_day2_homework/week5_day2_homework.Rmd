@@ -1,0 +1,194 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(CodeClanData)
+library(ggplot2)
+```
+
+```{r}
+install.packages(c("viridis", "ggthemes"))
+```
+
+# Task 1 Create a suitable plot for the following three datasets
+```{r}
+late_deliveries
+```
+
+# 3.2 Comparison
+# 3.1.1 late_deliveries
+```{r}
+ ggplot(late_deliveries) +
+    aes(x = date, y = late_deliveries) +
+  geom_line() +
+  scale_fill_distiller(palette = "RdYlBu")
+```
+
+# 3.1.2 recovery_times
+```{r}
+recovery_times
+```
+
+```{r}
+ ggplot(recovery_times) +
+    aes(x = treatment_group, y = recovery, fill = prognosis) +
+  geom_col()
+```
+
+# 3.1.3 recovery_times
+
+```{r}
+fitness_levels
+```
+
+```{r}
+ ggplot(fitness_levels) +
+    aes(x = child, y = fitness_score, fill = group) +
+  geom_col()
+```
+
+# 3.2 Connection 
+# 3.2.1. blood_pressure
+```{r}
+blood_pressure
+```
+
+```{r}
+ggplot(blood_pressure) +
+  aes(x = daily_saturated_fat_intake_mg, y = systolic_blood_pressure_mm_hg) +
+  geom_point(size = 5) +
+  labs(
+    x = "daily_saturated_fat_intake_mg",
+    y = "systolic_blood_pressure_mm_hg",
+    title = "blood pressure") +
+  scale_fill_grey(start = 0, end = 0.75)
+  
+```
+
+
+# 3.2.2 car_use
+
+```{r}
+car_use
+```
+
+# So bad it's good!
+```{r}
+ggplot(car_use) +
+  aes(x = population, y = car_use_percent, size = air_so2_concentration_ppm, colour = city) +
+  geom_point()
+
+```
+
+```{r}
+ggplot(car_use) +
+  aes(x = population, y = car_use_percent, size = air_so2_concentration_ppm) +
+  geom_point()
+
+```
+
+# 3.3 Distribution
+# 3.3.1 d20_outcomes
+```{r}
+d20_outcomes
+```
+
+```{r}
+ggplot(d20_outcomes) +
+  aes(x = outcome) +
+  scale_fill_brewer() +
+  geom_bar()
+
+```
+
+```{r}
+d20x5_outcomes
+```
+
+
+# 3.3.2 d20x5_outcomes
+```{r}
+ggplot(d20x5_outcomes) +
+  aes(x = outcome) +
+  scale_fill_brewer() +
+  geom_bar()
+
+```
+
+
+# 3.4 Composition
+# 3.4.1 pension_surplus
+
+```{r}
+pension_surplus
+```
+
+### So wrong but amusing 
+```{r}
+ggplot(pension_surplus) +
+    aes(x = balance, fill = item) +
+  geom_histogram()
+
+```
+
+```{r}
+ggplot(pension_surplus) +
+    aes(x = balance, y = item, postion = "stack") +
+  geom_col() +
+  scale_fill_brewer(palette = "BuGn")
+
+```
+
+
+```{r}
+pension_liabilities
+```
+
+
+```{r}
+ggplot(pension_liabilities) +
+  aes( x = year, fill = liability_millions) +
+  geom_histogram(aes(colour = liability_type)) 
+
+```
+
+
+```{r}
+ggplot(pension_liabilities) +
+  aes( x = year, y = liability_millions) +
+  geom_line(aes(colour = liability_type)) 
+
+```
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
