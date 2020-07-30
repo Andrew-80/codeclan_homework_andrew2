@@ -23,6 +23,7 @@ late_deliveries
  ggplot(late_deliveries) +
     aes(x = date, y = late_deliveries) +
   geom_line() +
+  geom_point() +
   scale_fill_distiller(palette = "RdYlBu")
 ```
 
@@ -37,6 +38,17 @@ recovery_times
   geom_col()
 ```
 
+```{r}
+library(ggthemes)
+ggplot(recovery_times) +
+  aes(x = treatment_group, y = recovery, fill = prognosis) +
+  geom_col(position = "dodge") + 
+  labs(x = "\n Treatment Group", y = "Recovery time (months) \n") + 
+    scale_fill_colorblind()
+
+```
+
+
 # 3.1.3 recovery_times
 
 ```{r}
@@ -49,6 +61,18 @@ fitness_levels
   geom_col()
 ```
 
+```{r}
+ggplot(fitness_levels) +
+  aes(x = age, y = fitness_score, group = child, color = child) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ group, ncol = 5) + 
+  labs(y = "fitness score \n", x = "\n age (years)", title = "Individual child fitness score by Group") + 
+  scale_colour_hue(guide = guide_legend(nrow = 10, byrow = TRUE))
+
+```
+
+
 # 3.2 Connection 
 # 3.2.1. blood_pressure
 ```{r}
@@ -59,6 +83,7 @@ blood_pressure
 ggplot(blood_pressure) +
   aes(x = daily_saturated_fat_intake_mg, y = systolic_blood_pressure_mm_hg) +
   geom_point(size = 5) +
+  geom_smooth() +
   labs(
     x = "daily_saturated_fat_intake_mg",
     y = "systolic_blood_pressure_mm_hg",
@@ -89,6 +114,12 @@ ggplot(car_use) +
 
 ```
 
+```{r}
+
+```
+
+
+
 # 3.3 Distribution
 # 3.3.1 d20_outcomes
 ```{r}
@@ -102,6 +133,14 @@ ggplot(d20_outcomes) +
   geom_bar()
 
 ```
+
+```{r}
+ggplot(d20_outcomes) +
+  aes(x = outcome) +
+  geom_histogram(bins = 20, col = "white")
+```
+
+
 
 ```{r}
 d20x5_outcomes
