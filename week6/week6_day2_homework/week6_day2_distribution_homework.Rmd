@@ -1,0 +1,67 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+```{r}
+library(skimr)
+```
+
+
+```{r}
+clean_names <- read_csv("20190928-items.csv")
+```
+
+Q1 Load the data, clean_names() and explore it.
+```{r}
+view(clean_names)
+
+```
+
+```{r}
+glimpse(clean_names)
+```
+
+```{r}
+head(clean_names)
+```
+
+Q2. Find the brand with the highest numbers of phones in the dataset.
+A. Samsung
+```{r}
+ggplot(clean_names) +
+  aes(x = brand)+
+  geom_bar(bins = 25, col = "white")
+```
+
+Q3. For your top brand, plot the distribution of phone ratings as a probability density, overlaying a fitted normal distribution. Do you think the normal distribution provides a good model of these ratings?
+
+```{r}
+clean_names_mean <- clean_names %>%
+  filter(Position == "Samsung") %>%
+  summarise(
+    num = n(),
+    mean = mean(count()),
+    sd = sd(Count)
+  )
+clean_names_mean
+
+```
+
+```{r}
+clean_names %>%
+  select(-1) %>%
+  group_by(brand) %>%
+  skim()
+
+```
+
+
+
+
+
