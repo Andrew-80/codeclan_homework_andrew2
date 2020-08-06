@@ -1,0 +1,134 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(infer)
+```
+
+```{r}
+clean_names <- read_csv("ames.csv")
+
+```
+
+```{r}
+view(clean_names)
+```
+
+```{r}
+glimpse(clean_names)
+```
+
+Q2. Investigate the distribution of lot_area. Is the distribution roughly normal? If not, what problems do you find? 
+A. The distribution shows a high concentration around 25,000, with a considerable number of outliers, with 4 in the range of
+```{r}
+ggplot(clean_names) +
+  aes(x = Lot.Area) +
+  geom_histogram(bins = 25, col = "white")
+```
+
+```{r}
+ggplot(clean_names) +
+  aes(x = Lot.Area) +
+  geom_boxplot()
+
+```
+
+
+```{r}
+clean_names_stats <- clean_names %>%
+  summarise(
+    count = n(),
+    mean = mean(Lot.Area),
+    sd = sd(Lot.Area)
+  )
+clean_names_stats
+```
+
+
+Q3. Compute and visualise a bootstrap sampling distribution for the mean(lot_area) of the sold houses
+```{r}
+bootstrap_clean_names <- clean_names %>%
+  rep_sample_n(size = 200, replace = TRUE, reps = 5000) %>%
+  summarise(Lot.Area = mean(Lot.Area))
+bootstrap_clean_names
+
+```
+
+```{r}
+bootstrap_clean_names %>%
+  ggplot(aes(x = Lot.Area)) +
+  geom_histogram(col = "white") +
+  labs(x = "Mean_Lot_Area")
+```
+
+
+Q4. Use your bootstrap distribution to calculate a 95% CI for mean(lot_area), and visualise it on the distribution
+```{r}
+ci_95 <- bootstrap_clean_names %>%
+  summarise(
+    mean = mean(Lot.Area),
+    lower_bound = quantile(Lot.Area, probs = 0.025),
+    upper_bound = quantile(Lot.Area, probs = 0.975)
+  )
+ci_95
+
+```
+
+
+```{r}
+infer_clean_names <- clean_names %>%
+  specify(response = Lot.Area) %>%
+  generate(reps = 5000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+infer_clean_names
+```
+
+```{r}
+infer_ci_95 <- infer_clean_names %>%
+  get_ci(level = 0.95, type = "percentile")
+infer_ci_95
+
+```
+
+```{r}
+infer_clean_names %>%
+  visualise() +
+  shade_confidence_interval(endpoints = infer_ci_95)
+
+```
+
+Q5. You would like to know the mean(lot_area) of the sold houses with higher confidence. Calculate the 99% CI for this variable (you can re-use your bootstrap distribution from above). Is it narrower or broader than the 95% CI? Does that make sense?
+A. The graph is broader of the 99% is broader than the 95%. yes it makes sense as it is now 99% percentile of the total.
+```{r}
+infer_ci_99 <- infer_clean_names %>%
+  get_ci(level = 0.99, type = "percentile")
+infer_ci_99
+
+```
+
+ 
+```{r}
+infer_clean_names %>%
+  visualise() +
+  shade_confidence_interval(endpoints = infer_ci_99)
+```
+
+Q6. Calculate the point estimate of the mean(lot_area)
+```{r}
+point_ests <- clean_names %>%
+  rep_sample_n(size = 50, reps = 1) %>%
+  ungroup() %>%
+  summarise(
+    mean_Lot.Area = mean(Lot.Area),
+  )
+point_ests
+
+
+```
+
+
