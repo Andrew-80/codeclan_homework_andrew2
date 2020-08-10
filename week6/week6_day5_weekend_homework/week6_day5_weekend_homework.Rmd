@@ -1,0 +1,180 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(janitor)
+library(dplyr)
+library(infer)
+
+```
+
+1.1 Hypothesis testing - practical
+
+```{r}
+data(msleep)
+msleep
+```
+
+Q1. Explore the dataset and familiarise yourself with it
+```{r}
+glimpse(msleep)
+```
+
+```{r}
+view(msleep)
+
+```
+
+```{r}
+head(msleep)
+
+```
+
+```{r}
+msleep %>%
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(col = "white", bins = 30)
+```
+
+```{r}
+msleep %>%
+  ggplot(aes(x = sleep_total)) +
+  geom_boxplot()
+
+```
+
+Q2. Jabberwockies sleep for around 7 hours a night, on average. Perform an appropriate statistical test to determine
+whether the mean sleep_total in the sampled population of animal types differs from the typical value for jabberwockies
+A. The mean sleep of the animals is 10.42 hours, higher than the 7 hours average from the Jabberwockie
+```{r}
+msleep %>%
+  summarise(mean_sleep_total = mean(sleep_total))
+
+```
+
+Q3. Perform an appropriate statistical test to determine whether omnivores sleep for significantly longer than herbivores, on average.
+A. The mean for a herbivores is 9.51 hours, compared to the mean for an omnivores 10.93 hours. So the omnivores does sleep more than a herbivire
+```{r}
+herbi_sleep_total <- msleep %>%
+  filter(vore == "herbi") %>%
+  select(name, sleep_total)
+herbi_sleep_total 
+```
+
+```{r}
+herbi_stats <- msleep %>%
+  filter(vore == "herbi") %>%
+  summarise(
+    count = n(),
+    mean = mean(sleep_total),
+    sd = sd(sleep_total)
+  )
+herbi_stats
+
+```
+
+```{r}
+omni_sleep_total <- msleep %>%
+  filter(vore == "omni") %>%
+  select(name, sleep_total)
+omni_sleep_total 
+```
+
+```{r}
+omni_stats <- msleep %>%
+  filter(vore == "omni") %>%
+  summarise(
+    count = n(),
+    mean = mean(sleep_total),
+    sd = sd(sleep_total)
+  )
+omni_stats
+```
+
+Q4. Perform an appropriate statistical test to determine whether the proportion of domesticated animal types in the population of animal types is greater than 5%. [Hint - think about creating an is_domesticated variable for the analysis].
+A. 
+```{r}
+msleep_dist <- msleep %>%
+  tabyl(conservation)
+msleep_dist 
+
+```
+
+```{r}
+is_domesticated_msleep <- msleep %>%
+  mutate(is_domesticated_msleep = ifelse(conservation == "domesticated", 1, 0))
+ 
+is_domesticated_msleep
+  
+```
+ ifelse("domestic", 1, 0)
+
+```{r}
+bootstrap_msleep <- is_domesticated_msleep %>%
+  specify(response = is_domesticated_msleep) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+bootstrap_msleep %>%
+  visualise(bins = 30)
+
+```
+
+```{r}
+msleep_ci95 <- bootstrap_msleep %>%
+  get_ci(level = 0.05, type = "percentile")
+msleep_ci95
+```
+
+
+1.2 Hypothesis testing - interpretation
+1.2.1 Defining the Hypothesis
+For the following three business problems write out H0 and Ha in both mathematical notation and in words. Also state the method you would use to generate the null distribution (bootstrap, permutation or simulation).
+1. You work for a independent coffee shop. You’ve performed a small survey in the local town and found that 40% of the people you randomly asked were aware of your shop in the town. You then conduct a marketing campaign by flyering local venues and targeting advertisements on social media. Finally you conduct a second small random survey in the town, asking if people are aware of your coffee shop. You want to test the hypothesis that the campaign has significantly increased awareness of the shop.
+
+A. 
+
+The test is a one-sample test for proportion, the initial findings were that 40% of the town were aware of the shop. For the flyering and advertising to have successfullly increased the awareness of the coffee shop the second small random survey findings would show an increase in awareness.  
+
+I'd use bootstrap to create the distribution
+
+To define the Significance level: 0.05 (alpha), calculated p-value: 0.07
+
+First we need to calculate the statistic we are interested in = number of people awae of the coffee shop/ total number of people surveyed.
+
+# 
+  hypothesize(null = "point", mu = 0.05) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+ 
+ Coffee shop problem. Significance level: 0.05, calculated p-value: 0.07
+
+2. You work for a website design company and have performed an A/B test on the position of a banner on a website page promoting a particular item. 
+
+A/B testing A method comparing two versions of a web page, email, flyer or other marketing device against each other to determine which version performs better. As it is essentially a controlled experiment, the design should try to ensure that the groups experiencing both versions of the marketing device are need to establish that the two groups are equivalent and representative of the population.
+
+In the current test, the first group continues to be shown the banner at the right hand side of the webpage (its usual position) while the test group is shown it at the top of the page. The performance metric we will be testing is click through rate (CTR) on the banner, i.e. what proportion of users click on the banner
+
+A.
+
+I'd use simulate to create the distribution
+
+  hypothesize(null = "point", p = 0.006) %>%
+  generate(reps = 5000, type = "simulate") %>%
+  calculate(stat = "prop")
+
+Website company problem. Significance level: 0.01, p-value: 0.006
+
+3. You work as an analyst for a car manufacturing company - they have specific standards they must meet for standards and regulation purposes. You have been asked to check the quality control of the manufacture of a particular car part. The part must have a width of 145mm, with a small (given) level of tolerance. You have been given data on a sample of 1,000 parts produced over the period of a week.
+
+A. 
+
+Manufacturing company problem. Significance level: 0.05, p-value: 0.55
+
+
+
+
