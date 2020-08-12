@@ -1,0 +1,122 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+library(tsibbledata)
+library(fable)
+```
+
+1 Question 1
+Load in the nyc_bikes data from the tsibbledata package. Have an initial look at it to see what you’re working with. Create three new columns: one that stores only the year the bike was used, one that stores only the month the bike was used, and one that stores the date. Use the data stored in start_time to create these new columns.
+```{r}
+view(nyc_bikes)
+```
+
+```{r}
+nyc_bikes
+
+```
+
+
+```{r}
+nyc_bikes_yr_mth_date <- nyc_bikes %>%
+  mutate(year_use = lubridate::year(start_time)) %>%
+  mutate(month_use = lubridate::month(start_time)) %>%
+  mutate(date_use = lubridate::date(start_time))
+nyc_bikes_yr_mth_date
+```
+
+2 Question 2
+Summarise the number of bike hire counts by month. Make a plot of this data. *Hint: remember that to group time series (tsibble) data, you need to use index_by instead of group_by before your summarise function. What does this plot tell you about the time series? Do you think this downsampled data would be adequate to build a forecast with?
+```{r}
+nyc_bikes_hire_count <- nyc_bikes_yr_mth_date %>%
+  index_by(start_time) %>%
+  summarise(month_use = sum(month_use))
+nyc_bikes_hire_count
+```
+
+```{r}
+nyc_bikes_yr_mth_date %>%
+  count()
+```
+
+
+
+```{r}
+ggplot(nyc_bikes_hire) +
+  aes(x = month) +
+  geom_histogram()
+```
+
+
+3 Question 3
+Now Summarise the number of bike hire counts by date. Make a plot of this new aggregated data. What does this plot tell you about the time series? Would this data be preferrable for time series forecasting compared to the monthly data? 
+```{r}
+nyc_bikes_hire_date <- nyc_bikes_yr_mth_date %>%
+  index_by(date_use) %>%
+  summarise(date_use = sum(date_use))
+nyc_bikes_hire_date
+
+```
+
+```{r}
+nyc_bikes_date_summary <- nyc_bikes_yr_mth_date %>% 
+  index_by(date_use) %>%
+  summarise(bike_hire_c
+nyc_bikes_date_summary 
+```
+
+
+4 Question 4
+Let’s begin to build a model. For this, we will use the downsampled by date dataset we created above in question 3. If you haven’t managed to get the code to do this, you can find it below.
+```{r}
+
+```
+
+5 Question 5
+Now we have our model fit, build a forecast to predict bike use over the next four months. Plot your models alongside your data.
+Hint: forecast parameter would be roughly 120 (30 days x 4 months)
+```{r}
+
+```
+
+6 Question 6
+Test your model accuracy : choose a training data set from your main dataset, build a forecast on the training set, and then plot the training set forecast against the real data. Calculate model accuracy.
+```{r}
+
+```
+
+7 Question 7
+Look at your forecast plots and accuracy values. Describe your results. Are your models a good fit for the data? If not, why not? What would you suggest doing with the data if you were expected to present these back to a client? For example, would you ask for more data? Would you test a different model?
+```{r}
+
+```
+
+8 Question 8
+Make a simple ggplot (geom_point) which plots the start longitude and latitudes of each bike. Create a separate facet for each bike_id. Colour the dots in by month of use. What does this tell you about what month each bike was used most in?
+Do the same for the end longitude and latitudes.
+```{r}
+
+```
+
+9 Question 9
+Create an interactive leaflet plot which plots the start points of the city bikes. Ensure it has at least markers to denote start points (taken from the nyc_bikes_spatial data). Feel free to add any additional features you wish.
+```{r}
+
+```
+
+10 Extension
+This is VERY much an extension task, and will take a bit of time (as well as googling) if you decide to attempt it.
+Adapt your leaflet plot which adds lines showing the start and end point of each bike.
+```{r}
+
+```
+
+
+
+
