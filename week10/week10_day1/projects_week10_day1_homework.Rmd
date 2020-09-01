@@ -1,0 +1,71 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+2.1 Load the data into a dataframe project
+```{r}
+project <- read_csv("data/project_management.csv")
+```
+
+
+```{r}
+summary(project)
+```
+
+2.2 Plot the data, taking estimated_length as the independent variable and actual_length as the dependent variable.
+```{r}
+project_plot <- project %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point()
+ project_plot 
+```
+
+2.3 Label the data points with their row number in the data frame using geom_text()
+2.3.1 Identify by eye any points you think might be outliers and note their labels. A. 5 Top right
+2.3.2 Further split your outliers into those you think are ‘influential’ or ‘non-influential’ based on a visual assessment of their leverage. A.
+```{r}
+project_plot <- project %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_text() +
+  aes(label = 1:nrow(project)) +
+  geom_point()
+ project_plot
+```
+
+```{r}
+model <- lm(formula = actual_length ~ estimated_length, data = project)
+
+model
+```
+
+
+```{r}
+project_plot <- project %>%
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_text() +
+  aes(label = 1:nrow(project)) +
+  geom_point() +
+  plot(model)
+ project_plot
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
