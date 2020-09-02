@@ -1,0 +1,96 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(dplyr)
+```
+
+1.1 Load the diamonds.csv data set and undertake an initial exploration of the data. You will find a description of the meanings of the variables on the relevant Kaggle page
+```{r}
+diamonds <- read_csv("diamonds.csv")
+diamonds
+```
+
+```{r}
+summary(diamonds)
+```
+
+```{r}
+library(ggiraphExtra)
+library(GGally)
+```
+
+1.2 We expect the carat of the diamonds to be strong correlated with the physical dimensions x, y and z. Use ggpairs() to investigate correlations between these four variables.
+```{r}
+ggpairs(diamonds)
+```
+
+1.3 So, we do find significant correlations. Let’s drop columns x, y and z from the dataset, in preparation to use only carat going forward.
+
+```{r}
+diamonds_xyz <- diamonds %>%
+  select(-x, -y, - z)
+diamonds_xyz
+
+```
+
+1.4 We are interested in developing a regression model for the price of a diamond in terms of the possible predictor variables in the dataset.
+i. Use ggpairs() to investigate correlations between price and the predictors (this may take a while to run, don’t worry, make coffee or something).
+```{r}
+ggpairs(diamonds_xyz)
+
+```
+
+1.4 i. Perform further ggplot visualisations of any significant correlations you find.
+```{r}
+diamonds_xyz %>%
+  ggplot(aes(y = carat)) +
+  geom_boxplot()
+```
+
+```{r}
+plot_diamonds <- diamonds_xyz %>%
+  ggplot(aes(x = color, y = carat)) +
+  geom_point()
+plot_diamonds
+```
+
+```{r}
+plot_diamonds <- diamonds_xyz %>%
+  ggplot(aes(x = price, y = carat)) +
+  geom_point()
+plot_diamonds
+```
+
+1.5 Shortly we may try a regression fit using one or more of the categorical predictors cut, clarity and color, so let’s investigate these predictors:
+i. Investigate the factor levels of these predictors. How many dummy variables do you expect for each of them?
+```{r}
+
+```
+
+```{r}
+library(fastDummies)
+```
+
+Use the dummy_cols() function in the fastDummies package to generate dummies for these predictors and check the number of dummies in each case.
+```{r}
+diamonds_xyz_dummy <- diamonds_xyz %>%
+  dummy_cols(select_columns = "carat", remove_first_dummy = TRUE, remove_selected_columns = TRUE)
+diamonds_xyz_dummy
+```
+
+
+
+
+
+
+
+
+
+
