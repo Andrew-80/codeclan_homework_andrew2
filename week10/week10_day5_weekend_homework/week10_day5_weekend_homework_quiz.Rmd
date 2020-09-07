@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Homework Quiz
+
+1. I want to predict how well 6 year-olds are going to do in their final school exams. Using the following variables am I likely under-fitting, fitting well or over-fitting? Postcode, gender, reading level, score in maths test, date of birth, family income.
+A.There is considerable information using thise variables, I think the likelyhood would be for over-fitting.
+
+2. If I have two models, one with an AIC score of 34,902 and the other with an AIC score of 33,559 which model should I use?
+A.The smaller AIC score of 33,559 
+
+3. I have two models, the first with: r-squared: 0.44, adjusted r-squared: 0.43. The second with: r-squared: 0.47, adjusted r-squared: 0.41. Which one should I use?
+A. You would the higher number for this model - in this case the second model is higher.
+
+4. I have a model with the following errors: RMSE error on test set: 10.3, RMSE error on training data: 10.4. Do you think this model is over-fitting?
+A. RMSE values between 0.2 and 0.5 shows that the model can relatively predict the data accurately - so in this case the errors are around 0.1 and are considered weak s- so an example of overfitting 
+
+5. How does k-fold validation work?
+A. K-fold Cross Validation(CV) divides the data into folds to ensure each fold is used as a testing set at some point. YO then train the model on say 9 models and test on1 model. Once the process is finished we can average the error across all the test folds. This gives us a very accurate measure of of the model performance.
+
+6. What is a validation set? When do you need one?
+A. A validation set is the data used to validate and test, this must be representative of what will happen in the future. You need a a validation set to use in the Validation/Test phase, which will be after the training phase (1.Training phase. 2.Validation/Test phase. 3.Application phase)
+
+7. Describe how backwards selection works.
+A. Using all variables, for each variable test the using a model fit. Then delete the variable with the statistically insignificant deterioration of the model fit, and repeating this process until no further variables can be deleted
+
+8. Describe how best subset selection works.
+A.Best subset regression is also known as 'all possible regressions' and 'all possible models'. Is model regression selection where you testing all possible combination of the predictor variables, then selecting the best model according statistical criteria
+
+9. It is estimated on 5% of model projects end up being deployed. What actions can you take to maximise the likelihood of your model being deployed?
+A. The model meets the business requirement. The purpose is undestood and the context for who it will add insight can be explained.It is easy to deploy and does not then have to be translated to allow devops to buld if required.
+
+10. What metric could you use to confirm that the recent population is similar to the development population?
+A. 
+
+11. How is the Population Stability Index defined? What does this mean in words?
+A. Population stability index (PSI) is the metric to measure how much a variable has shifted  between two samples or over time. It's a method for monitoring changes in the charateristics of a population and for diagnosing possible problems in models.
+
+12. Above what PSI value might we need to start to consider rebuilding or recalibrating the model
+A.
+
+13. What are the common errors that can crop up when implementing a model?
+A. Not enough data, not having data cleaned, not having duplicates or missing data
+
+14. After performance monitoring, if we find that the discrimination is still satisfactory but the accuracy has deteriorated, what is the recommended action?
+A. Look at the data and business case. It is likely either the data used in the data set is no longer as accurate as before and something has changed, you need to go and look at the data source and ensure it is still correct and is it still relevant to what the model was trying to do.
+
+15. Why is it important to have a unique model identifier for each model?
+A. A unique identifier is critical or the system cannot distinguish between the two articles and will not view them as unique from one another. Without a unique identifier, the updated record or the delete request cannot match to the intended record in the index
+
+16. Why is it important to document the modelling rationale and approach?
+A. It is important so you and or anyone else looking at the model understand why the model was built and for what purpose
+
+
