@@ -1,0 +1,130 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(cluster)
+library(factoextra)
+library(dendextend)
+```
+
+
+```{r}
+computers <- read_csv("computers.csv")
+```
+
+```{r}
+head(computers)
+```
+
+```{r}
+summary(computers)
+```
+
+Clustering lab
+
+1. Explore the data - do you think it looks potentially suitable for clustering?
+A. Yes, the metrics above for hd and ram look to be good for clustering. Plus there are n/a in the data 
+
+2. Chose a value of k
+
+```{r}
+computers_scale <- computers %>%
+  janitor::clean_names() %>%
+  select(c(hd, ram))
+computers_scale 
+```
+```{r}
+ggplot(computers_scale, aes(x = hd, y = ram)) +
+    geom_point()
+```
+
+```{r}
+computers_cluster<- kmeans(computers_scale, centers = 6, nstart = 25)
+computers_cluster
+```
+
+
+3. Create clusters with chosen value of k - pull out the sizes of the clusters and the average of each variable in the dataset for each cluster.
+```{r}
+library(animation)
+```
+
+```{r}
+library(broom)
+```
+```{r}
+plot(computers_scale, cex = 0.5, hang = -5)
+rect.hclust(computers_scale, k = 1, border = 2:5)
+```
+
+```{r}
+max_k <- 20 
+
+computer_clusters <- tibble(k = 1:max_k) %>%
+  mutate(
+    kclust = map(k, ~ kmeans(computers_scale, .x, nstart = 25)),
+    tidies = map(kclust, tidy),
+    glanced = map(kclust, glance),
+augmented = map(kclust, augment, ram)
+  )
+
+computer_clusters
+```
+
+```{r}
+computers_scale %>% 
+  kmeans.ani(centers = 5) 
+```
+
+```{r}
+
+```
+
+4. Visualise the clusters.
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "silhouette", nstart = 25)
+```
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "gap_stat", nstart = 25, k.max = 6)
+
+```
+``
+
+```{r}
+ggplot(computers_scale, aes(x = k, y = tot.withinss)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = seq(1,20, by = 11))
+```
+
+
+
+```{r}
+computers_scale %>%
+  filter(k <= 6) %>%
+  ggplot(aes(x = hd, y = ram)) +
+  geom_point(aes(colour = .cluster)) +
+  facet_wrap(~k)
+  
+```
+
+
+5. Comment on the results - do you think the clustering worked well?
+? a number of errors and I cant see if its worked well!
+
+
+
+
+
+
+
+
+
+
+
+
