@@ -1,0 +1,180 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+
+```
+
+```{r}
+library(tidyverse)
+titanic_set <- read_csv('titanic_decision_tree_data.csv')
+```
+
+```{r}
+shuffle_index <- sample(1:nrow(titanic_set))
+
+```
+
+```{r}
+# shuffle the data so class order isn't in order - need this for training/testing split later on 
+titanic_set <- titanic_set[shuffle_index, ]
+```
+
+```{r}
+titanic_set
+```
+
+1.1 Question 1
+
+Cleaning up the data is always the first step. Do the following:
+Take only observations which have a survived flag (i.e. that aren’t missing)
+Turn your important variables into factors (sex, survived, pclass, embarkation) - Convert to factor
+Create an age_status variable which groups individuals under (and including) 16 years of age into a category called “child” category and those over 16 into a category called “adult”.
+Drop the NA
+Drop any variables you don’t need (X1, passenger_id, name, ticket, far, cabin)
+
+```{r}
+titanic_clean <- titanic_set %>%
+  # filter(survived %in% c(0,1)) %>%
+    mutate(sex = as.factor(sex), 
+           age_status = as.factor(if_else(age <= 16, "child", "adult")),
+         class = factor(pclass, levels = c(3,2,1), labels = c("Lower", "Middle", "Upper")), 
+           survived_flag = factor(survived, levels = c(0,1), labels = c("No", "Yes")), 
+           port_embarkation = as.factor(embarked)) %>%
+  select(sex, age_status, class, port_embarkation, sib_sp, parch, survived_flag) %>%
+  na.omit()
+titanic_clean
+```
+
+
+1.2 Question 2
+
+Have a look at your data and create some plots to ensure you know what you’re working with before you begin. Write a summary of what you have found in your plots. Which variables do you think might be useful to predict whether or not people are going to die? Knowing this before you start is the best way to have a sanity check that your model is doing a good job
+
+```{r}
+titanic_clean %>%
+  group_by(age_status) %>%
+  summarise(num_each_age = n()) %>%
+  ggplot(aes(x = age_status, y = num_each_age)) +
+  geom_col()
+
+```
+
+```{r}
+titanic_clean %>%
+  group_by(sex) %>%
+  summarise(num_each_sex = n()) %>%
+  ggplot(aes(x = sex, y = num_each_sex)) +
+  geom_col()
+
+```
+
+```{r}
+titanic_clean %>%
+  group_by(port_embarkation) %>%
+  summarise(num_each_port_embarkation = n()) %>%
+  ggplot(aes(x = port_embarkation, y = num_each_port_embarkation)) +
+  geom_col()
+```
+
+
+```{r}
+titanic_clean %>%
+  group_by(class) %>%
+  summarise(num_each_port_class = n()) %>%
+  ggplot(aes(x = class, y = num_each_port_class)) +
+  geom_col()
+```
+
+
+
+1.3 Question 3
+Now you can start to build your model. Create your testing and training set using an appropriate split. Check you have balanced sets. Write down why you chose the split you did and produce output tables to show whether or not it is balanced.
+
+# train test split
+```{r}
+n_data <- nrow(titanic_clean)
+
+# get an index
+test_index <- sample(1:n_data, size = n_data*0.2)
+
+# get those rows from the actual index
+titanic_test <- slice(titanic_clean, test_index)
+
+#get the training dataset
+titanic_train <- slice(titanic_clean, -test_index)
+
+```
+
+```{r}
+library(janitor)
+```
+
+```{r}
+titanic_test %>%
+  tabyl(class)
+```
+
+```{r}
+titanic_train %>%
+  tabyl(class)
+```
+
+1.4 Question 4
+Create your decision tree to try and predict survival probability using an appropriate method, and create a decision tree plot.
+```{r}
+titanic_fit <- rpart(class ~ . ,
+                    data = titanic_train,
+                    method = "class")
+titanic_fit
+```
+
+```{r}
+rpart.plot(titanic_fit, yesno = 2)
+```
+
+1.4 Question 5
+
+Write down what this tells you, in detail. What variables are important? What does each node tell you? Who has the highest chance of surviving? Who has the lowest? Provide as much detail as you can.
+A. If you were 'Lower' class your chances of dying were 61%. The best chance of survival were middle class males disembarking form Queenstown or Southhampton
+
+
+1.5 Question 6
+Test and add your predicitons to your data. Create a confusion matrix. Write down in detial what this tells you for this specific dataset.
+
+```{r}
+library(modelr)
+```
+
+```{r}
+titanic_test_pred <- titanic_test %>%
+  add_predictions(titanic_fit, type = "class")
+titanic_test_pred
+```
+
+```{r}
+rpart.predict(titanic_fit, newdata = titanic_test[1:3, ], rules = FALSE)
+```
+
+```{r}
+library(yardstick)
+```
+
+```{r}
+conf_matrix <- titanic_test_pred %>%
+  conf_mat(truth = class, estimate = pred)
+conf_matrix
+```
+
+```{r}
+accuracy_deaths <- titanic_test_pred %>%
+  accuracy(truth = class, estimate = pred)
+accuracy_deaths
+```
+
+
