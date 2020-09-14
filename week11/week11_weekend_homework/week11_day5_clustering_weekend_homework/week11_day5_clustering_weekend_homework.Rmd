@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(cluster)
+library(factoextra)
+library(dendextend)
+library(janitor)
+
+```
+
+Clustering
+
+```{r}
+mall_customers <- read_csv("mall_customers.csv")
+```
+
+```{r}
+mall_customers
+```
+
+```{r}
+head(mall_customers)
+
+```
+
+```{r}
+summary(mall_customers)
+```
+
+```{r}
+mall_customers_clean <- mall_customers %>%
+  clean_names() %>%
+  select(gender, age, annual_income_k, spending_score_1_100)
+mall_customers_clean
+```
+
+1.You have been provided some customer data from a shopping centre. Do some exploratory analysis on the data. Comment on findings.
+A. There appear to be 5 loose clusters on the graph below. With a clear concentration and cluster around the x-axis = 55 (annual_income_k) and y-axis = 50 (spending_score_1_1000 
+```{r}
+mall_customers_clean_plot <- mall_customers_clean %>%
+  select(c(annual_income_k, spending_score_1_100))
+
+ggplot(mall_customers_clean, aes(annual_income_k, spending_score_1_100)) +
+  geom_point()
+```
+
+```{r}
+mall_customers_clean_age <- mall_customers_clean %>%
+  select(c(age, spending_score_1_100))
+
+ggplot(mall_customers_clean, aes(age, spending_score_1_100)) +
+  geom_point()
+```
+
+
+2.We are interested in creating a marketing campaign to target customers based on their spending score and annual income. Perform a k-means clustering to find if there are meaningful clusters in the data to target the customers.
+A. Yes there are 5 clear identified clusters
+```{r}
+mall_customers_clean_scale <- mall_customers_clean %>% 
+                      mutate_all(scale) 
+
+summary(mall_customers_clean_scale)
+```
+
+
+3.Perform k-means clustering and chose a value of k.
+
+```{r}
+library(factoextra)
+```
+
+Each of the methods of choosing k:
+3.1 Elbow method
+A. From below I read 2 options k = 3 or k = 5. k = 5 looks to be clearer
+```{r}
+fviz_nbclust(mall_customers_clean_scale, kmeans, method = "wss", nstart = 25)
+```
+
+3.2 Silhouette coefficient
+A. K = 5 is optimal here
+```{r}
+fviz_nbclust(mall_customers_clean_scale, kmeans, method = "silhouette", nstart = 25)
+```
+
+3.3 Gap statistic
+A.  Result K = 1 
+```{r}
+fviz_nbclust(mall_customers_clean_scale, kmeans, method = "gap_stat")
+```
+
+A. From reading all of the above clusters K = 3 or K = 5 give optimal results. I'm going for k = 5
+
+
+4.Visualise the clustering for your chosen value of k.
+```{r}
+library(animation)
+
+mall_customers_clean_scale %>% 
+  kmeans.ani(centers = 5)
+```
+
+
+5.Do you think the clustering seems a good fit for this data?
+A. Yes I think the 5 clusters give a good clear fit for the data 
+
+
+6.Comment on the attributes on one or two of the clusters (maybe even give them a label if you like - like in section 4.1 of the ‘Segmentation & clustering intro’ lesson).
+While there are 5 clusters shown above plotting Annual income vs Spending score, it is clear form the graph factoring in age there highest spenders are all predominately under the age of 40 - presumably as the are likely to not have children and also have a higher disposable income.
+6.1 The under 40 with high disposable income (top left)
+6.2 The over 40 with low disposable income
+
+
+
+
+

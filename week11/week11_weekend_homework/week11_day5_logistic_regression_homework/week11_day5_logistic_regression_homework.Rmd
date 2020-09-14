@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(modelr)
+library(janitor)
+```
+
+```{r}
+library(broom)
+```
+
+```{r}
+library(GGally)
+```
+
+```{r}
+library(modelr)
+```
+
+```{r}
+orange_juice <- read_csv("orange_juice.csv")
+```
+
+```{r}
+head(orange_juice)
+
+```
+
+```{r}
+summary(orange_juice)
+```
+
+```{r}
+dim(orange_juice)
+```
+
+```{r}
+orange_juice_clean <- orange_juice %>% 
+  clean_names()
+orange_juice_clean
+```
+
+
+
+
+
+
+
+
+
+
